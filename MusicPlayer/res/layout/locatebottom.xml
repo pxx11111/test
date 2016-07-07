@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/bottom"
+    android:background="#80dfdfdf" >
+
+    <RelativeLayout
+        android:id="@+id/local"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" >
+
+        <ImageView
+            android:id="@+id/location_im"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/example" />
+
+        <LinearLayout
+            android:id="@+id/location_ll"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_alignBottom="@id/location_im"
+            android:layout_alignTop="@id/location_im"
+            android:layout_toRightOf="@id/location_im"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/PlayName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:text="时间总是安吉拉大大老大老大带来巨大拉力第" />
+
+            <TextView
+                android:id="@+id/PlaySinger"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="123" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/location_ll"
+            android:layout_alignTop="@id/location_ll"
+            android:layout_toRightOf="@id/location_ll" >
+
+            <ImageButton
+                android:id="@+id/location_im1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/playbar_btn_playlist" />
+
+            <ImageButton
+                android:id="@+id/location_im2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:onClick="bt"
+                android:src="@drawable/playbar_btn_play" />
+
+            <ImageButton
+                android:id="@+id/location_im3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/playbar_btn_next" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
