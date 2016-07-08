@@ -36,7 +36,7 @@
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_below="@id/PlayReturn"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
@@ -46,35 +46,58 @@
     <com.android.shape.CircleImageView
         android:id="@+id/PlayImage"
         android:layout_width="230dp"
-        android:layout_height="230dp"
+        android:layout_height="230dp" 
         android:layout_below="@id/PlayReturn"
-        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
         android:scaleType="centerInside"
         android:src="@drawable/example" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/PlayButtonGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical" >
-
-        <SeekBar
+        android:layout_centerHorizontal="true" >
+        
+        <RelativeLayout 
+            android:id="@+id/TimeContral"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content">
+        	<TextView 
+        	    android:id="@+id/StartTime"
+        	    android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_marginLeft="5dp"
+        		android:layout_marginTop="7dp"
+        		android:text="00:00"
+        		/>
+        	<TextView 
+        	    android:id="@+id/EndTime"
+        	    android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:layout_marginRight="5dp"
+        		android:layout_marginTop="7dp"
+        		android:layout_alignParentRight="true"
+        		android:text="00:00"
+        		/>
+            <SeekBar
             android:id="@+id/PlayProgressBar"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/StartTime"
+            android:layout_toLeftOf="@id/EndTime"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/media_player_progress_bg" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/TimeContral"
             android:layout_centerHorizontal="true"
             android:orientation="horizontal" >
 
@@ -128,6 +151,6 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/list" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

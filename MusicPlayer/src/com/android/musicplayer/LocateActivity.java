@@ -16,6 +16,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -31,7 +32,6 @@ import android.widget.TextView;
 public class LocateActivity extends MyActivity {
 	private ImageButton ReturnBt;
 	private View Bottom;
-	private View Head;
 	private ListView SongList;
 	private SongListAdpter adp;
 	private List<MusicDao> MusicList;
@@ -43,7 +43,9 @@ public class LocateActivity extends MyActivity {
 	private MusicDao Music;
 	private int musicIndext = 0;// 记录当前歌曲的位置
 	private int playInfo = 0x11;// 暂停键的状态，0x11第一次进入，0x12暂停，0x13播放
+	boolean Flush = true;
 	private MyBroadCastActivity activity;
+	private View view;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +71,20 @@ public class LocateActivity extends MyActivity {
 		// TODO Auto-generated method stub
 		ReturnBt = (ImageButton) findViewById(R.id.Activity_Back);
 		Bottom = (View) findViewById(R.id.LocateBottom);
-		Head = (View) findViewById(R.id.LocateHead);
 		SongList = (ListView) findViewById(R.id.LocateListview);
 		Name = (TextView) findViewById(R.id.PlayName);
 		Singer = (TextView) findViewById(R.id.PlaySinger);
 		upButton = (ImageButton) findViewById(R.id.location_im1);
 		playButton = (ImageButton) findViewById(R.id.location_im2);
 		downButton = (ImageButton) findViewById(R.id.location_im3);
-		Intent inte=getIntent();
-		int c=inte.getIntExtra("color", -1);
-		Head.setBackgroundColor(c);
+		view = findViewById(R.id.LocateHead);
+		Intent intent=getIntent();
+		SharedPreferences sp=getSharedPreferences("info", MODE_PRIVATE);
+		int c=sp.getInt("color", -1);
+		view.setBackgroundColor(c);
+		Bottom.setBackgroundColor(c);
 	}
+	
 	
 	private void SetMyAdapter() {
 		// TODO Auto-generated method stub
@@ -97,6 +102,7 @@ public class LocateActivity extends MyActivity {
 		IntentFilter filter = new IntentFilter("com.ACTIVITY");
 		registerReceiver(activity, filter);
 	}
+	
 
 	private void AddListener() {
 		// TODO Auto-generated method stub
@@ -105,6 +111,10 @@ public class LocateActivity extends MyActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Intent intent1 = new Intent("com.Service");
+				intent1.putExtra("flush", true);
+				intent1.putExtra("music", Music);
+				sendBroadcast(intent1);
 				LocateActivity.this.finish();
 			}
 		});
@@ -113,13 +123,16 @@ public class LocateActivity extends MyActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				Intent intent1 = new Intent("com.Service");
+				intent1.putExtra("flush", true);
+				intent1.putExtra("music", Music);
+				sendBroadcast(intent1);
 				Intent intent = new Intent(LocateActivity.this, PlayActivity.class);
 				startActivity(intent);
 			}
 		});
 		
 		SongList.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
@@ -132,9 +145,74 @@ public class LocateActivity extends MyActivity {
 				intent.putExtra("music", Music);
 				intent.putExtra("NewMusic", 1);
 				intent.putExtra("playitem", 1);
+				intent.putExtra("index", musicIndext);
 				sendBroadcast(intent);	
+				Name.setText(Music.getMusicName());
+				Singer.setText(Music.getMusicOther());
 			}
 		});
+		
+		upButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.Service");
+				if (musicIndext == 0) {
+					musicIndext = MusicList.size() - 1;
+					Music = MusicList.get(musicIndext);
+				} else {
+					Music = MusicList.get(--musicIndext);
+				}
+				intent.putExtra("playitem", 1);
+				intent.putExtra("NewMusic", 1);
+				intent.putExtra("index", musicIndext);
+				intent.putExtra("music", Music);
+				sendBroadcast(intent);
+				playButton.setImageResource(R.drawable.playbar_btn_pause);
+				Name.setText(Music.getMusicName());
+				Singer.setText(Music.getMusicOther());
+			}
+		});
+		
+		playButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.Service");
+				intent.putExtra("click", 1);
+				intent.putExtra("playMusic", 1);
+				Music = MusicList.get(musicIndext);
+				intent.putExtra("music", Music);
+				sendBroadcast(intent);
+				Name.setText(Music.getMusicName());
+				Singer.setText(Music.getMusicOther());
+			}
+		});
+		
+		downButton.setOnClickListener(new OnClickListener() {	
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent("com.Service");
+				if (musicIndext == MusicList.size() - 1) {
+					musicIndext = 0;
+					Music = MusicList.get(musicIndext);
+				} else {
+					Music = MusicList.get(++musicIndext);
+				}
+				intent.putExtra("playitem", 1);
+				intent.putExtra("NewMusic", 1);
+				intent.putExtra("music", Music);
+				intent.putExtra("index", musicIndext);
+				sendBroadcast(intent);
+				playButton.setImageResource(R.drawable.playbar_btn_pause);
+				Name.setText(Music.getMusicName());
+				Singer.setText(Music.getMusicOther());
+			}
+		});
+		
 	}
 	
 	// 接收广播，根据反馈的信息更改ui界面
@@ -144,8 +222,7 @@ public class LocateActivity extends MyActivity {
 			public void onReceive(Context context, Intent intent) {
 				int flag = intent.getIntExtra("playFlag", -1);
 				playInfo = intent.getIntExtra("playInfo", 0x11);
-				if (flag != -1) {
-					
+				if (flag != -1) {		
 					switch (playInfo) {
 					case 0x11:
 						playButton.setImageResource(R.drawable.playbar_btn_play);
@@ -161,12 +238,22 @@ public class LocateActivity extends MyActivity {
 						break;
 					}
 				}
-
-				// 更新进度条和时间显示
-				int current = intent.getIntExtra("current", -1);
-				int total = intent.getIntExtra("total", -1);
-
-			}
+				
+				Music = (MusicDao) intent.getSerializableExtra("music");
+				Flush = intent.getBooleanExtra("flush", false);
+				if(Music != null && Flush){
+					intent.putExtra("index", musicIndext);
+					if(intent.getBooleanExtra("playing",false)){
+						playButton.setImageResource(R.drawable.playbar_btn_pause);
+					}
+						Name.setText(Music.getMusicName());
+						Singer.setText(Music.getMusicOther());
+						Intent intent1 = new Intent("com.Service");
+						intent1.putExtra("flush", false);
+						intent1.putExtra("music", Music);
+						sendBroadcast(intent1);
+				}
+			} 
 
 		}
 

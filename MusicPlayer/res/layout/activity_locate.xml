@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LocateActivity" 
-    >
+    tools:context=".LocateActivity"
+    android:id="@+id/activity_locate" >
 
     <include
         android:id="@+id/LocateHead"

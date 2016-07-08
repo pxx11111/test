@@ -15,29 +15,29 @@ public final class R {
 		public static final int ic_launcher = 0x7f02000a;
 	}
 	public static final class id {
-		public static final int HueBar = 0x7f0a002b;
-		public static final int SVBox = 0x7f0a002a;
-		public static final int action_settings = 0x7f0a0047;
-		public static final int alphaSeekBar = 0x7f0a0033;
-		public static final int alphaTitle = 0x7f0a002d;
-		public static final int oldColorBox = 0x7f0a0028;
-		public static final int pickerLayout = 0x7f0a0025;
-		public static final int presetButton_1 = 0x7f0a002e;
-		public static final int presetButton_2 = 0x7f0a002f;
-		public static final int presetButton_3 = 0x7f0a0030;
-		public static final int presetButton_4 = 0x7f0a0031;
-		public static final int presetButton_5 = 0x7f0a0032;
-		public static final int presetButtons = 0x7f0a002c;
-		public static final int presetColorsTitle = 0x7f0a0029;
-		public static final int previewBox = 0x7f0a0027;
-		public static final int previewBoxLayout = 0x7f0a0026;
-		public static final int previewTitle = 0x7f0a0024;
+		public static final int HueBar = 0x7f090032;
+		public static final int SVBox = 0x7f090031;
+		public static final int action_settings = 0x7f09004d;
+		public static final int alphaSeekBar = 0x7f09003a;
+		public static final int alphaTitle = 0x7f090034;
+		public static final int oldColorBox = 0x7f09002f;
+		public static final int pickerLayout = 0x7f09002c;
+		public static final int presetButton_1 = 0x7f090035;
+		public static final int presetButton_2 = 0x7f090036;
+		public static final int presetButton_3 = 0x7f090037;
+		public static final int presetButton_4 = 0x7f090038;
+		public static final int presetButton_5 = 0x7f090039;
+		public static final int presetButtons = 0x7f090033;
+		public static final int presetColorsTitle = 0x7f090030;
+		public static final int previewBox = 0x7f09002e;
+		public static final int previewBoxLayout = 0x7f09002d;
+		public static final int previewTitle = 0x7f09002b;
 	}
 	public static final class layout {
 		public static final int color_picker = 0x7f030007;
 	}
 	public static final class menu {
-		public static final int main = 0x7f090003;
+		public static final int main = 0x7f080003;
 	}
 	public static final class string {
 		public static final int action_settings = 0x7f060001;

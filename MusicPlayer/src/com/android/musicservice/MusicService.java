@@ -12,10 +12,12 @@ import android.os.IBinder;
 
 public class MusicService extends Service {
 	private MusicBroaderCaet broaderCaet;
-	private MusicDao musicDao;
+	private MusicDao Music;
 	private MediaPlayer mediaPlayer = new MediaPlayer();
 	private int playInfo=0x11;// 标记暂停的状态
 	private int current, total;// 当前时长，总时长
+	private int PlayIndex;
+	private boolean Flush = true;
 
 	@Override
 	public void onCreate() {
@@ -38,12 +40,14 @@ public class MusicService extends Service {
 			int falg1 = intent.getIntExtra("click", -1);
 			int playMusic = intent.getIntExtra("playMusic", -1);
 			int infoitem=intent.getIntExtra("playitem", -1);
-	        musicDao = (MusicDao) intent.getSerializableExtra("music");
+			PlayIndex = intent.getIntExtra("index", PlayIndex);
+	        Music = (MusicDao) intent.getSerializableExtra("music");
+	        Flush = intent.getBooleanExtra("flush", Flush);
             if (falg != -1) {
-				playMusic(musicDao);
+				playMusic(Music);
 				if (infoitem != -1) {
 					
-	                 playMusic(musicDao);
+	                 playMusic(Music);
 	                 playInfo = 0x12; 
 			}}
             if(falg1!=-1)
@@ -51,7 +55,7 @@ public class MusicService extends Service {
 			if (playMusic != -1) {
 				switch (playInfo) {
 				case 0x11:// 第一次进入
-                 playMusic(musicDao);
+                 playMusic(Music);
 			        playInfo = 0x12;
 					
 					break;
@@ -60,7 +64,7 @@ public class MusicService extends Service {
 					playInfo = 0x13;
 					break;
 				case 0x13:// 开始
-					playMusicresum(musicDao);
+					playMusicresum(Music);
 					playInfo = 0x12;
 					break;
 
@@ -79,6 +83,7 @@ public class MusicService extends Service {
 			Intent intent2 = new Intent("com.ACTIVITY");
 			intent2.putExtra("playInfo", playInfo);
 			intent2.putExtra("playFlag", 1);
+			
 			sendBroadcast(intent2);
 		}
 	}
@@ -100,11 +105,15 @@ public class MusicService extends Service {
 							try {
 
 								while (current < total) {// 当前位置小于总时长时
-									sleep(1000);
+									sleep(100);
 									current = mediaPlayer.getCurrentPosition();
 									Intent intent = new Intent("com.ACTIVITY");
 									intent.putExtra("current", current);
 									intent.putExtra("total", total);
+									intent.putExtra("music", Music);
+									intent.putExtra("playing", mediaPlayer.isPlaying());
+									intent.putExtra("flush", Flush);
+									intent.putExtra("index", PlayIndex);
 									sendBroadcast(intent);
 								}
 

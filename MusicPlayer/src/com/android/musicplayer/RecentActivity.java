@@ -4,6 +4,8 @@ import com.example.musicplayer.R;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +32,13 @@ public class RecentActivity extends MyActivity {
 	private void FindAllView() {
 		// TODO Auto-generated method stub
 		ReturnBt = (ImageButton) findViewById(R.id.RecentBack);
+		View view1 = findViewById(R.id.recent1);
+		View view2 = findViewById(R.id.recent2);
+		Intent intent=getIntent();
+		SharedPreferences sp=getSharedPreferences("info", MODE_PRIVATE);
+		int c=sp.getInt("color", -1);
+		view1.setBackgroundColor(c);
+		view2.setBackgroundColor(c);
 	}
 
 	private void AddListener() {

@@ -2,8 +2,7 @@ package com.android.skin;
 
 import java.util.ArrayList;
 
-import com.yskang.colorpicker.ColorPicker;
-import com.yskang.colorpicker.OnColorSelectedListener;
+
 
 
 import android.content.Context;
